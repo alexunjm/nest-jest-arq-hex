@@ -3,14 +3,14 @@
 {
 	"name": "Node TypeScript and MySQL Dev",
 	// use build to only node
-	// "build": {
-	// 	"dockerfile": "./node",
-	// 	// Update 'VARIANT' to pick a Node version: 10, 12, 14
-	// 	"args": { "VARIANT": "14" }
-	// },
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "app",
-	"workspaceFolder": "/workspace",
+	"build": {
+		"dockerfile": "./node/Dockerfile",
+		// Update 'VARIANT' to pick a Node version: 10, 12, 14
+		"args": { "VARIANT": "14" }
+	},
+	// "dockerComposeFile": "docker-compose.yml",
+	// "service": "node",
+	// "workspaceFolder": "/workspace",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
