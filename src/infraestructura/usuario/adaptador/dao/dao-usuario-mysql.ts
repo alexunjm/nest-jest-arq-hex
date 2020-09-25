@@ -13,7 +13,7 @@ export class DaoUsuarioMysql implements DaoUsuario {
 
   async listar(): Promise<UsuarioDto[]> {
     return this.entityManager.query(
-      'SELECT u.nombre, u.fechaCreacion FROM USUARIO u',
+      'SELECT u.nombre, u.fechaCreacion FROM usuario u',
     );
   }
 }
