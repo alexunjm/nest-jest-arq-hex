@@ -1,0 +1,22 @@
+{
+   "type": "mysql",
+   "host": "db",
+   "port": 3306,
+   "username": "root",
+   "password": "rootP4ss",
+   "database": "hogar_deleite",
+   "synchronize": true,
+   "logging": false,
+   "entities": [
+      "dist/**/*.entidad{.ts,.js}"
+   ],
+   "migrations": [
+      "dist/infraestructura/migraciones/*.js"
+   ],
+   "subscribers": [
+      "src/subscriber/**/*.ts"
+   ],
+   "cli": {
+      "migrationsDir": "src/infraestructura/migraciones"
+   }
+}
