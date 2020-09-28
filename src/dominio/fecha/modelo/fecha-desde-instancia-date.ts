@@ -11,7 +11,7 @@ export class FechaDesdeInstanciaDate extends Fecha {
     }
 
     private static datosFechaDe(objetoDate: Date): DatosFecha {
-        if (!objetoDate) throw new ErrorValorRequerido(`${objetoDate} no es una fecha válida`);
+        if (!objetoDate) throw new ErrorValorRequerido(`${objetoDate} no es un objeto Date válido`);
         
         const anio = objetoDate.getFullYear();
         const mes = objetoDate.getMonth();
