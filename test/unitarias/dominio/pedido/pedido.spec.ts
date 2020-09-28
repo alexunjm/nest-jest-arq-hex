@@ -1,36 +1,9 @@
-import { FechaDesdeInstanciaDate } from "src/dominio/fecha/modelo/fecha-desde-instancia-date";
-import { RangoFechas } from "src/dominio/fecha/modelo/rango-fechas";
-
-class _Pedido {
-
-    fecha: Date;
-    fechaPago: Date;
-
-    constructor() {
-        this.fecha = new Date();
-    }
-    
-    marcarComoPagado() {
-        this.fechaPago = new Date();
-    }
-
-    fuePagadoEnRangoDeFechas(fechaInicio: Date, fechaFin: Date) {
-        if (!this.fechaPago) return false;
-
-        const desde = new FechaDesdeInstanciaDate(fechaInicio);
-        const hasta = new FechaDesdeInstanciaDate(fechaFin);
-
-        const rangoFechas = new RangoFechas({desde, hasta});
-
-        const fechaPedidoPagado = new FechaDesdeInstanciaDate(this.fechaPago);
-        return rangoFechas.incluye(fechaPedidoPagado);
-    }
-}
+import { Pedido } from "src/dominio/pedido/modelo/pedido";
 
 describe('Pedido', () => {
 
-    // const _Pedido = Pedido as any;
-    let unPedido: _Pedido;
+    const _Pedido = Pedido as any;
+    let unPedido;
 
     beforeEach(() => {
         unPedido = new _Pedido();
@@ -55,7 +28,7 @@ describe('Pedido', () => {
         expect(unPedido.fechaPago).not.toBeNull();
         expect(unPedido.fechaPago).toBeInstanceOf(Date);
     });
-    
+
     it([
         '4. un pedido sin marcar como pagado, debe indicar que NO fue pagado',
         'entre la fecha en que se tomó el pedido y la fecha actual'
