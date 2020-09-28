@@ -1,5 +1,4 @@
 import { FechaDesdeDatosFecha } from "src/dominio/fecha/modelo/fecha-desde-datos-fecha";
-import { FechaDesdeInstanciaDate } from "src/dominio/fecha/modelo/fecha-desde-instancia-date";
 import { RangoFechas } from "src/dominio/fecha/modelo/rango-fechas";
 import { numeroAleatorioEntre } from "test/util/random-number";
 
