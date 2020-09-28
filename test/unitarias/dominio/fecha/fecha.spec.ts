@@ -1,9 +1,9 @@
-import { Fecha } from "src/dominio/fecha/modelo/fecha";
+import { FechaDesdeDatosFecha } from "src/dominio/fecha/modelo/fecha-desde-datos-fecha";
 import { numeroAleatorioEntre } from "test/util/random-number";
 
 describe('Fecha', () => {
 
-  const _Fecha = Fecha as any;
+  const _FechaDesdeDatosFecha = FechaDesdeDatosFecha as any;
   let datosDeUnaFecha: DatosFecha;
 
   beforeEach(() => {
@@ -19,11 +19,11 @@ describe('Fecha', () => {
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
-      cualquiera: new _Fecha(datosDeUnaFecha),
+      cualquiera: new _FechaDesdeDatosFecha(datosDeUnaFecha),
       mayor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
+        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
+        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
+        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
       }
     };
 
@@ -37,11 +37,11 @@ describe('Fecha', () => {
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
-      cualquiera: new _Fecha(datosDeUnaFecha),
+      cualquiera: new _FechaDesdeDatosFecha(datosDeUnaFecha),
       menor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
+        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
+        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
+        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
       }
     };
     const laMismaFecha = unaFecha.cualquiera;
@@ -57,11 +57,11 @@ describe('Fecha', () => {
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
-      cualquiera: new _Fecha(datosDeUnaFecha),
+      cualquiera: new _FechaDesdeDatosFecha(datosDeUnaFecha),
       menor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
+        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
+        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
+        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
       }
     };
 
@@ -75,11 +75,11 @@ describe('Fecha', () => {
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
-      cualquiera: new _Fecha(datosDeUnaFecha),
+      cualquiera: new _FechaDesdeDatosFecha(datosDeUnaFecha),
       mayor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
+        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
+        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
+        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
       }
     };
     const laMismaFecha = unaFecha.cualquiera;

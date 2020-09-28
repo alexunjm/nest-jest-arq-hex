@@ -1,41 +1,40 @@
-import { Fecha } from "src/dominio/fecha/modelo/fecha";
+import { FechaDesdeDatosFecha } from "src/dominio/fecha/modelo/fecha-desde-datos-fecha";
 import { FechaDesdeInstanciaDate } from "src/dominio/fecha/modelo/fecha-desde-instancia-date";
 import { RangoFechas } from "src/dominio/fecha/modelo/rango-fechas";
 import { numeroAleatorioEntre } from "test/util/random-number";
 
 describe('RangoFechas', () => {
 
-  const _Fecha = Fecha as any;
+  const _FechaDesdeDatosFecha = FechaDesdeDatosFecha as any;
   const _RangoFechas = RangoFechas as any;
-  const _FechaDesdeInstanciaDate = FechaDesdeInstanciaDate as any;
-  let datosDeUnaFecha: DatosFecha;
 
-  beforeEach(() => {
+  let datosDeUnaFecha: DatosFecha;
+  let unaFecha: any;
+  let unRangoDeFechas: any;
+  const numeroX = numeroAleatorioEntre(1, 10);
+
+  beforeAll(() => {
     datosDeUnaFecha = {
       anio: 2020,
       mes: 9,
       dia: 27
     };
-  });
 
-  it('un rango de fechas incluye una fecha que esté dentro del rango', () => {
-    const x = numeroAleatorioEntre(1, 10);
-
-    const unaFecha = {
-      dentroDelRango: new _Fecha(datosDeUnaFecha),
+    unaFecha = {
+      dentroDelRango: new _FechaDesdeDatosFecha(datosDeUnaFecha),
       menor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
+        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - numeroX }),
+        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - numeroX }),
+        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - numeroX }),
       },
       mayor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
+        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + numeroX }),
+        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + numeroX }),
+        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + numeroX }),
       }
     };
 
-    const unRangoDeFechas = {
+    unRangoDeFechas = {
       enDias: new _RangoFechas({
         desde: unaFecha.menor.xDias,
         hasta: unaFecha.mayor.xDias
@@ -49,6 +48,9 @@ describe('RangoFechas', () => {
         hasta: unaFecha.mayor.xAnios
       })
     };
+  });
+
+  it('un rango de fechas incluye una fecha que esté dentro del rango', () => {
 
     expect(unRangoDeFechas.enDias.incluye(unaFecha.menor.xDias)).toBeTruthy();
     expect(unRangoDeFechas.enDias.incluye(unaFecha.dentroDelRango)).toBeTruthy();
@@ -65,47 +67,18 @@ describe('RangoFechas', () => {
   });
 
   it('un rango de fechas NO incluye una fecha fuera del rango', () => {
-    const x = numeroAleatorioEntre(1, 10);
-
-    const unaFecha = {
-      menor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
-      },
-      mayor: {
-        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
-        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
-        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
-      }
-    };
 
     const unaFechaFueraDelRango = {
       porIzquierda: {
-        enDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x - 1 }),
-        enMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x - 1 }),
-        enAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x - 1 })
+        enDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - numeroX - 1 }),
+        enMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - numeroX - 1 }),
+        enAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - numeroX - 1 })
       },
       porDerecha: {
-        enDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x + 1 }),
-        enMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x + 1 }),
-        enAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x + 1 })
+        enDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + numeroX + 1 }),
+        enMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + numeroX + 1 }),
+        enAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + numeroX + 1 })
       },
-    };
-
-    const unRangoDeFechas = {
-      enDias: new _RangoFechas({
-        desde: unaFecha.menor.xDias,
-        hasta: unaFecha.mayor.xDias
-      }),
-      enMeses: new _RangoFechas({
-        desde: unaFecha.menor.xDias,
-        hasta: unaFecha.mayor.xDias
-      }),
-      enAnios: new _RangoFechas({
-        desde: unaFecha.menor.xDias,
-        hasta: unaFecha.mayor.xDias
-      })
     };
 
     expect(unRangoDeFechas.enDias.incluye(unaFechaFueraDelRango.porIzquierda.enDias)).not.toBeTruthy();
@@ -117,11 +90,6 @@ describe('RangoFechas', () => {
     expect(unRangoDeFechas.enAnios.incluye(unaFechaFueraDelRango.porIzquierda.enAnios)).not.toBeTruthy();
     expect(unRangoDeFechas.enAnios.incluye(unaFechaFueraDelRango.porDerecha.enAnios)).not.toBeTruthy();
 
-  });
-
-  it('una fecha Date (de js) debería convertirse en una intancia de _Fecha', () => {
-    const today = new Date();
-    expect(new _FechaDesdeInstanciaDate(today)).toBeInstanceOf(_Fecha);
   });
 
 });

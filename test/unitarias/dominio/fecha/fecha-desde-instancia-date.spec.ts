@@ -1,24 +1,15 @@
 import { Fecha } from "src/dominio/fecha/modelo/fecha";
 import { FechaDesdeInstanciaDate } from "src/dominio/fecha/modelo/fecha-desde-instancia-date";
 
-describe('RangoFechas', () => {
+describe('FechaDesdeInstanciaDate', () => {
 
-  const _Fecha = Fecha as any;
   const _FechaDesdeInstanciaDate = FechaDesdeInstanciaDate as any;
-  let datosDeUnaFecha: DatosFecha;
-
-  beforeEach(() => {
-    datosDeUnaFecha = {
-      anio: 2020,
-      mes: 9,
-      dia: 27
-    };
-  });
 
   it('un objeto Date (de js) debería convertirse en una intancia de Fecha', () => {
     let hoy: Date;
     hoy = new Date();
-    expect(new _FechaDesdeInstanciaDate(hoy)).toBeInstanceOf(_Fecha);
+    const unaFecha: Fecha = new _FechaDesdeInstanciaDate(hoy);
+    expect(unaFecha).toBeInstanceOf(_FechaDesdeInstanciaDate);
   });
 
   it([
