@@ -15,7 +15,7 @@ describe('RangoFechas', () => {
     };
   });
 
-  it('7. una fecha Date (de js) debería convertirse en una intancia de _Fecha', () => {
+  it('una fecha Date (de js) debería convertirse en una intancia de _Fecha', () => {
     const today = new Date();
     expect(new _FechaDesdeInstanciaDate(today)).toBeInstanceOf(_Fecha);
   });

@@ -14,16 +14,16 @@ describe('Fecha', () => {
     };
   });
 
-  it('1. una fecha cualquiera es menor que una fecha mayor a ella', () => {
+  it('una fecha cualquiera es menor que una fecha mayor a ella', () => {
 
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
       cualquiera: new _Fecha(datosDeUnaFecha),
       mayor: {
-        xDias: new _Fecha({...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x}),
-        xMeses: new _Fecha({...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x}),
-        xAnios: new _Fecha({...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x}),
+        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
+        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
+        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
       }
     };
 
@@ -32,17 +32,17 @@ describe('Fecha', () => {
     expect(unaFecha.cualquiera.esMenorQue(unaFecha.mayor.xAnios)).toBeTruthy();
   });
 
-  it('2. una fecha cualquiera NO es menor que una fecha menor o igual a ella', () => {
+  it('una fecha cualquiera NO es menor que una fecha menor o igual a ella', () => {
 
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
       cualquiera: new _Fecha(datosDeUnaFecha),
       menor: {
-        xDias: new _Fecha({...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x}),
-        xMeses: new _Fecha({...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x}),
-        xAnios: new _Fecha({...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x}),
-    }
+        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
+        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
+        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
+      }
     };
     const laMismaFecha = unaFecha.cualquiera;
 
@@ -52,17 +52,17 @@ describe('Fecha', () => {
     expect(unaFecha.cualquiera.esMenorQue(unaFecha.menor.xAnios)).not.toBeTruthy();
   });
 
-  it('3. una fecha cualquiera es mayor que una fecha menor a ella', () => {
+  it('una fecha cualquiera es mayor que una fecha menor a ella', () => {
 
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
       cualquiera: new _Fecha(datosDeUnaFecha),
       menor: {
-        xDias: new _Fecha({...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x}),
-        xMeses: new _Fecha({...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x}),
-        xAnios: new _Fecha({...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x}),
-    }
+        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - x }),
+        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - x }),
+        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - x }),
+      }
     };
 
     expect(unaFecha.cualquiera.esMayorQue(unaFecha.menor.xDias)).toBeTruthy();
@@ -70,16 +70,16 @@ describe('Fecha', () => {
     expect(unaFecha.cualquiera.esMayorQue(unaFecha.menor.xAnios)).toBeTruthy();
   });
 
-  it('4. una fecha cualquiera NO es mayor que una fecha mayor o igual a ella', () => {
+  it('una fecha cualquiera NO es mayor que una fecha mayor o igual a ella', () => {
 
     const x = numeroAleatorioEntre(1, 10);
 
     const unaFecha = {
       cualquiera: new _Fecha(datosDeUnaFecha),
       mayor: {
-        xDias: new _Fecha({...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x}),
-        xMeses: new _Fecha({...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x}),
-        xAnios: new _Fecha({...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x}),
+        xDias: new _Fecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + x }),
+        xMeses: new _Fecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + x }),
+        xAnios: new _Fecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + x }),
       }
     };
     const laMismaFecha = unaFecha.cualquiera;
