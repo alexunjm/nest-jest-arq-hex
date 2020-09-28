@@ -1,7 +1,7 @@
 import { ErrorValorRequerido } from "src/dominio/errores/error-valor-requerido";
-import { Fecha } from "./fecha";
+import { FechaDesdeDatosFecha } from "./fecha-desde-datos-fecha";
 
-export class FechaDesdeInstanciaDate extends Fecha {
+export class FechaDesdeInstanciaDate extends FechaDesdeDatosFecha {
 
     fechaTipoDate: Date;
 
