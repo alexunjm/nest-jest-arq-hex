@@ -9,6 +9,9 @@ import { createStubObj } from "test/util/create-object.stub";
 
 describe('ServicioTomarPedido', () => {
 
+    /***
+     * Pendiente refactorizar utilizando patron Test Data Builder
+     */
     let daoRangoFechasStub: SinonStubbedInstance<DaoRangoFechas>;
     let daoPedidoStub: SinonStubbedInstance<DaoPedido>;
     let repositorioPedidoStub: SinonStubbedInstance<RepositorioPedido>;
@@ -29,24 +32,21 @@ describe('ServicioTomarPedido', () => {
     });
 
     it([
-        'si un cliente no pagó un pedido, fuera del rango de fechas activo',
-        'no se puede crear el pedido y debería lanzar un error'
+        '1. si un cliente nuevo toma un pedido en el rango de fechas activo',
+        'debería crearse el pedido'
     ].join(' '), async () => {
-        daoRangoFechasStub.obtenerRangoActivo.returns(Promise.resolve({
-            desde: '2020-09-27',
-            hasta: '2020-09-28',
-        }));
+        const anioMesDia = anioMesDiaDeHoy();
+        daoRangoFechasStub.obtenerRangoActivo.returns(
+            Promise.resolve({
+                desde: objetoStringDesdeDatosFecha({
+                    ...anioMesDia,
+                    dia: anioMesDia.dia - 1
+                }),
+                hasta: objetoStringDesdeDatosFecha(anioMesDia),
+            })
+        );
         daoPedidoStub.listar.returns(
-            Promise.resolve([
-                { fecha: new Date(), fechaPago: new Date() },
-                { fecha: new Date(), fechaPago: new Date() },
-                { fecha: new Date(), fechaPago: new Date() },
-            ].map(datosPedido => {
-                const pedido = new PedidoDto();
-                pedido.fecha = datosPedido.fecha.toISOString();
-                pedido.fechaPago = datosPedido.fechaPago.toISOString();
-                return pedido;
-            }))
+            Promise.resolve([])
         );
 
         const unNuevoPedido = new Pedido();
@@ -54,7 +54,191 @@ describe('ServicioTomarPedido', () => {
 
         expect(repositorioPedidoStub.tomarPedido.getCalls().length).toBe(1);
         expect(repositorioPedidoStub.tomarPedido.calledWith(unNuevoPedido)).toBeTruthy();
-        // const result = true;
-        // expect(result).toBeTruthy();
+    });
+
+    it([
+        '2. si un cliente nuevo toma un pedido FUERA del rango de fechas activo',
+        'NO debería crearse el pedido'
+    ].join(' '), async () => {
+        const anioMesDia = anioMesDiaDeHoy();
+        daoRangoFechasStub.obtenerRangoActivo.returns(
+            Promise.resolve({
+                desde: objetoStringDesdeDatosFecha({
+                    ...anioMesDia,
+                    dia: anioMesDia.dia - 10
+                }),
+                hasta: objetoStringDesdeDatosFecha({
+                    ...anioMesDia,
+                    dia: anioMesDia.dia - 1
+                }),
+            })
+        );
+        daoPedidoStub.listar.returns(
+            Promise.resolve([])
+        );
+
+        const unNuevoPedido = new Pedido();
+
+        await expect(
+            servicioTomarPedido.ejecutar(unNuevoPedido),
+        ).rejects.toThrow('No se puede tomar pedido fuera del rango de fechas activo');
+    });
+
+    it([
+        '3. si un cliente toma un pedido DENTRO el rango de fechas activo',
+        'y NO tiene pedidos PENDIENTES por pagar',
+        'FUERA del rango de fechas activo,',
+        'debería crearse el pedido y responder algo diferente de null'
+    ].join(' '), async () => {
+        const anioMesDia = anioMesDiaDeHoy();
+        daoRangoFechasStub.obtenerRangoActivo.returns(
+            Promise.resolve({
+                desde: objetoStringDesdeDatosFecha({
+                    ...anioMesDia,
+                    dia: anioMesDia.dia - 1
+                }),
+                hasta: objetoStringDesdeDatosFecha(anioMesDia),
+            })
+        );
+        daoPedidoStub.listar.returns(
+            Promise.resolve([
+                {
+                    fecha: objetoDateDesdeObjetoAnioMesDia({
+                        ...anioMesDia,
+                        mes: anioMesDia.mes - 2
+                    }),
+                    fechaPago: new Date()
+                },
+                {
+                    fecha: objetoDateDesdeObjetoAnioMesDia({
+                        ...anioMesDia,
+                        mes: anioMesDia.mes - 1
+                    }),
+                    fechaPago: new Date()
+                },
+                { fecha: new Date(), fechaPago: new Date() },
+            ].map(datosPedido => {
+                const pedido = new PedidoDto();
+                pedido.fecha = datosPedido.fecha.toISOString();
+                pedido.fechaPago = datosPedido.fechaPago ? datosPedido.fechaPago.toISOString(): null;
+                return pedido;
+            }))
+        );
+
+        const unNuevoPedido = new Pedido();
+
+        await expect(
+            servicioTomarPedido.ejecutar(unNuevoPedido),
+        ).resolves.not.toBeNull();
+    });
+
+    it([
+        '4. si un cliente toma un pedido DENTRO el rango de fechas activo',
+        'y TIENE PEDIDOS PENDIENTES POR PAGAR tomados',
+        'FUERA del rango de fechas activo,',
+        'NO se depbería poder crear el pedido y debería lanzar un error'
+    ].join(' '), async () => {
+        const anioMesDia = anioMesDiaDeHoy();
+        daoRangoFechasStub.obtenerRangoActivo.returns(
+            Promise.resolve({
+                desde: objetoStringDesdeDatosFecha({
+                    ...anioMesDia,
+                    dia: anioMesDia.dia - 1
+                }),
+                hasta: objetoStringDesdeDatosFecha(anioMesDia),
+            })
+        );
+        daoPedidoStub.listar.returns(
+            Promise.resolve([
+                {
+                    fecha: objetoDateDesdeObjetoAnioMesDia({
+                        ...anioMesDia,
+                        mes: anioMesDia.mes - 2
+                    }),
+                    fechaPago: new Date()
+                },
+                {
+                    fecha: objetoDateDesdeObjetoAnioMesDia({
+                        ...anioMesDia,
+                        mes: anioMesDia.mes - 1
+                    }),
+                },
+                { fecha: new Date(), fechaPago: new Date() },
+            ].map(datosPedido => {
+                const pedido = new PedidoDto();
+                pedido.fecha = datosPedido.fecha.toISOString();
+                pedido.fechaPago = datosPedido.fechaPago ? datosPedido.fechaPago.toISOString(): null;
+                return pedido;
+            }))
+        );
+
+        const unNuevoPedido = new Pedido();
+
+        await expect(
+            servicioTomarPedido.ejecutar(unNuevoPedido),
+        ).rejects.toThrow('No se puede tomar el pedido porque hay un pedido pendiente por pagar');
+    });
+
+    it([
+        '5. si un cliente toma un pedido DENTRO el rango de fechas activo',
+        'y TIENE PEDIDOS PENDIENTES POR PAGAR tomados',
+        'SOLO DENTRO del rango de fechas activo,',
+        'debería crearse el pedido y responder algo diferente de null'
+    ].join(' '), async () => {
+        const anioMesDia = anioMesDiaDeHoy();
+        daoRangoFechasStub.obtenerRangoActivo.returns(
+            Promise.resolve({
+                desde: objetoStringDesdeDatosFecha({
+                    ...anioMesDia,
+                    dia: anioMesDia.dia - 1
+                }),
+                hasta: objetoStringDesdeDatosFecha(anioMesDia),
+            })
+        );
+        daoPedidoStub.listar.returns(
+            Promise.resolve([
+                {
+                    fecha: objetoDateDesdeObjetoAnioMesDia({
+                        ...anioMesDia,
+                        mes: anioMesDia.mes - 2
+                    }),
+                    fechaPago: new Date()
+                },
+                {
+                    fecha: objetoDateDesdeObjetoAnioMesDia({
+                        ...anioMesDia,
+                    }),
+                },
+                { fecha: new Date(), fechaPago: new Date() },
+            ].map(datosPedido => {
+                const pedido = new PedidoDto();
+                pedido.fecha = datosPedido.fecha.toISOString();
+                pedido.fechaPago = datosPedido.fechaPago ? datosPedido.fechaPago.toISOString(): null;
+                return pedido;
+            }))
+        );
+
+        const unNuevoPedido = new Pedido();
+
+        await expect(
+            servicioTomarPedido.ejecutar(unNuevoPedido),
+        ).resolves.not.toBeNull();
     });
 });
+
+function anioMesDiaDeHoy() {
+    const hoy = new Date();
+    const dia = hoy.getUTCDate();
+    const mes = hoy.getUTCMonth();
+    const anio = hoy.getUTCFullYear();
+    return { anio, mes, dia };
+}
+
+function objetoStringDesdeDatosFecha(anioMesDia: { anio: number; mes: number; dia: number; }): string {
+    return `${anioMesDia.anio}-${anioMesDia.mes}-${anioMesDia.dia}`;
+}
+
+function objetoDateDesdeObjetoAnioMesDia(anioMesDia: { anio: number; mes: number; dia: number; }): Date {
+    return new Date(`${anioMesDia.anio}-${anioMesDia.mes}-${anioMesDia.dia}`);
+}
+
