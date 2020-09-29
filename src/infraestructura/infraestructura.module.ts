@@ -7,6 +7,7 @@ import { AppLogger } from './configuracion/ceiba-logger.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NodeEnv } from './configuracion/environment/env-node.enum';
 import { databaseConfigFactory } from './configuracion/database.config';
+import { RangoFechasModule } from './rango-fechas/rango-fechas.module';
 
 @Module({
   providers: [AppLogger],
@@ -24,8 +25,9 @@ import { databaseConfigFactory } from './configuracion/database.config';
           .required(),
       }),
     }),
+    RangoFechasModule,
     UsuarioModule,
-    PedidoModule,
+    // PedidoModule,
   ],
 })
 export class InfraestructuraModule {
