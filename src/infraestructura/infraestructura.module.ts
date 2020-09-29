@@ -1,7 +1,8 @@
 import * as Joi from '@hapi/joi';
 import { Module } from '@nestjs/common';
-import { UsuarioModule } from './usuario/usuario.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UsuarioModule } from './usuario/usuario.module';
+import { PedidoModule } from './pedido/pedido.module';
 import { AppLogger } from './configuracion/ceiba-logger.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NodeEnv } from './configuracion/environment/env-node.enum';
@@ -24,6 +25,7 @@ import { databaseConfigFactory } from './configuracion/database.config';
       }),
     }),
     UsuarioModule,
+    PedidoModule,
   ],
 })
 export class InfraestructuraModule {
