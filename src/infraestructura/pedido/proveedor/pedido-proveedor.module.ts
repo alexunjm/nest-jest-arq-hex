@@ -10,23 +10,24 @@ import { ManejadorListarPedido } from 'src/aplicacion/pedido/consulta/listar-ped
 import { DaoPedido } from 'src/dominio/pedido/puerto/dao/dao-pedido';
 import { DaoRangoFechas } from 'src/dominio/rango-fechas/puerto/dao/dao-rango-fechas';
 import { PedidoEntidad } from '../entidad/pedido.entidad';
+import { RangoFechasProveedorModule } from 'src/infraestructura/rango-fechas/proveedor/rango-fechas-proveedor.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PedidoEntidad])],
+  imports: [RangoFechasProveedorModule, TypeOrmModule.forFeature([PedidoEntidad])],
   providers: [
     { provide: ServicioTomarPedido, inject: [DaoRangoFechas, DaoPedido, RepositorioPedido], useFactory: servicioTomarPedidoProveedor },
     repositorioPedidoProvider,
     daoPedidoProvider,
     ManejadorTomarPedido,
     ManejadorListarPedido,
+    RangoFechasProveedorModule,
   ],
   exports: [
     ServicioTomarPedido,
     ManejadorTomarPedido,
     ManejadorListarPedido,
     RepositorioPedido,
-    DaoPedido,
-    DaoRangoFechas
+    DaoPedido
   ],
 })
 export class PedidoProveedorModule {

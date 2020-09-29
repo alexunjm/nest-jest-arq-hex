@@ -27,7 +27,7 @@ import { RangoFechasModule } from './rango-fechas/rango-fechas.module';
     }),
     RangoFechasModule,
     UsuarioModule,
-    // PedidoModule,
+    PedidoModule,
   ],
 })
 export class InfraestructuraModule {
