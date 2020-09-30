@@ -136,7 +136,7 @@ describe('ServicioTomarPedido', () => {
         '4. si un cliente toma un pedido DENTRO el rango de fechas activo',
         'y TIENE PEDIDOS PENDIENTES POR PAGAR tomados',
         'FUERA del rango de fechas activo,',
-        'NO se depbería poder crear el pedido y debería lanzar un error'
+        'NO se depería poder crear el pedido y debería lanzar un error'
     ].join(' '), async () => {
         const anioMesDia = anioMesDiaDeHoy();
         daoRangoFechasStub.obtenerRangoActivo.returns(
@@ -224,6 +224,11 @@ describe('ServicioTomarPedido', () => {
             servicioTomarPedido.ejecutar(unNuevoPedido),
         ).resolves.not.toBeNull();
     });
+
+    /**
+     * Agregar uno que valide el id generado al insertar en base de datos el pedido
+     * se pode como mock el repositorio
+     */
 });
 
 function anioMesDiaDeHoy() {
