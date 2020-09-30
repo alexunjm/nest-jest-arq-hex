@@ -13,7 +13,7 @@ services:
         USER_UID: 1000
         USER_GID: 1000
     volumes:
-      - ../:/workspace:cached
+      - ../:/home/node/workspace:cached
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
