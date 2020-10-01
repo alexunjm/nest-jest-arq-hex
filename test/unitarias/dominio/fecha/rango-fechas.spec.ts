@@ -1,35 +1,65 @@
-import { FechaDesdeDatosFecha } from "src/dominio/fecha/modelo/fecha-desde-datos-fecha";
 import { RangoFechas } from "src/dominio/fecha/modelo/rango-fechas";
-import { numeroAleatorioEntre } from "test/util/random-number";
+import { FechaDesdeDatosFechaBuilder } from "test/util/builder/FechaBuilder";
 
 describe('RangoFechas', () => {
 
-  const _FechaDesdeDatosFecha = FechaDesdeDatosFecha as any;
   const _RangoFechas = RangoFechas as any;
 
   let datosDeUnaFecha: DatosFecha;
   let unaFecha: any;
   let unRangoDeFechas: any;
-  const numeroX = numeroAleatorioEntre(1, 10);
+  const numeroX = 57;
+  let unaFechaDesdeDatosFechaBuilder: FechaDesdeDatosFechaBuilder;
 
   beforeAll(() => {
+    
     datosDeUnaFecha = {
       anio: 2020,
       mes: 9,
       dia: 27
     };
+    
+    unaFechaDesdeDatosFechaBuilder = FechaDesdeDatosFechaBuilder.unaFechaDesdeDatosFechaBuilder();
 
     unaFecha = {
-      dentroDelRango: new _FechaDesdeDatosFecha(datosDeUnaFecha),
+      dentroDelRango: unaFechaDesdeDatosFechaBuilder
+        .conAnio(datosDeUnaFecha.anio)
+        .conMes(datosDeUnaFecha.mes)
+        .conDia(datosDeUnaFecha.dia)
+        .build(),
       menor: {
-        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - numeroX }),
-        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - numeroX }),
-        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - numeroX }),
+        xDias: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia - numeroX)
+          .build(),
+        xMeses: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes - numeroX)
+          .conDia(datosDeUnaFecha.dia)
+          .build(),
+        xAnios: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio - numeroX)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia)
+          .build()
       },
       mayor: {
-        xDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + numeroX }),
-        xMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + numeroX }),
-        xAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + numeroX }),
+        xDias: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia + numeroX)
+          .build(),
+        xMeses: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes + numeroX)
+          .conDia(datosDeUnaFecha.dia)
+          .build(),
+        xAnios: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio + numeroX)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia)
+          .build()
       }
     };
 
@@ -49,7 +79,7 @@ describe('RangoFechas', () => {
     };
   });
 
-  it('un rango de fechas incluye una fecha que esté dentro del rango', () => {
+  it('1. un rango de fechas incluye una fecha que esté dentro del rango', () => {
 
     expect(unRangoDeFechas.enDias.incluye(unaFecha.menor.xDias)).toBeTruthy();
     expect(unRangoDeFechas.enDias.incluye(unaFecha.dentroDelRango)).toBeTruthy();
@@ -65,18 +95,42 @@ describe('RangoFechas', () => {
 
   });
 
-  it('un rango de fechas NO incluye una fecha fuera del rango', () => {
+  it('2. un rango de fechas NO incluye una fecha fuera del rango', () => {
 
     const unaFechaFueraDelRango = {
       porIzquierda: {
-        enDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia - numeroX - 1 }),
-        enMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes - numeroX - 1 }),
-        enAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio - numeroX - 1 })
+        enDias: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia - numeroX - 1)
+          .build(),
+        enMeses: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes - numeroX - 1)
+          .conDia(datosDeUnaFecha.dia)
+          .build(),
+        enAnios: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio - numeroX - 1)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia)
+          .build()
       },
       porDerecha: {
-        enDias: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, dia: datosDeUnaFecha.dia + numeroX + 1 }),
-        enMeses: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, mes: datosDeUnaFecha.mes + numeroX + 1 }),
-        enAnios: new _FechaDesdeDatosFecha({ ...datosDeUnaFecha, anio: datosDeUnaFecha.anio + numeroX + 1 })
+        enDias: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia + numeroX + 1)
+          .build(),
+        enMeses: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio)
+          .conMes(datosDeUnaFecha.mes + numeroX + 1)
+          .conDia(datosDeUnaFecha.dia)
+          .build(),
+        enAnios: unaFechaDesdeDatosFechaBuilder
+          .conAnio(datosDeUnaFecha.anio + numeroX + 1)
+          .conMes(datosDeUnaFecha.mes)
+          .conDia(datosDeUnaFecha.dia)
+          .build()
       },
     };
 

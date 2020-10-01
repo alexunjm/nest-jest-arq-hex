@@ -10,6 +10,10 @@ export class FechaDesdeInstanciaDate extends FechaDesdeDatosFecha {
         this.fechaTipoDate = objetoDate;
     }
 
+    public obtenerDatosFecha() {
+        FechaDesdeInstanciaDate.datosFechaDe(this.fechaTipoDate);
+    }
+
     private static datosFechaDe(objetoDate: Date): DatosFecha {
         if (!objetoDate) throw new ErrorValorRequerido(`${objetoDate} no es un objeto Date válido`);
         

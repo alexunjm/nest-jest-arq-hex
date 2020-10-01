@@ -5,4 +5,8 @@ export interface Fecha extends DatosFecha {
     esIgualA(fecha: Fecha): boolean;
 
     esMayorQue(fecha: Fecha): boolean;
+
+    convertirATipoString(): string;
+
+    convertirATipoDate(): Date;
 }
