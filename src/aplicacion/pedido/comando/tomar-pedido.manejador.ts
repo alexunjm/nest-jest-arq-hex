@@ -9,8 +9,11 @@ export class ManejadorTomarPedido {
 
   async ejecutar(comandoTomarPedido: ComandoTomarPedido) {
     await this._servicioTomarPedido.ejecutar(
-      new Pedido(/* 
-        comandoTomarPedido.fechaCreacion, */
+      new Pedido(
+        comandoTomarPedido.nombre,
+        comandoTomarPedido.celular,
+        comandoTomarPedido.direccion,
+        comandoTomarPedido.detalle,
       ),
     );
   }

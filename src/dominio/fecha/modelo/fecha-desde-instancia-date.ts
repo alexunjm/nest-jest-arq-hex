@@ -18,7 +18,7 @@ export class FechaDesdeInstanciaDate extends FechaDesdeDatosFecha {
         if (!objetoDate) throw new ErrorValorRequerido(`${objetoDate} no es un objeto Date válido`);
         
         const anio = objetoDate.getFullYear();
-        const mes = objetoDate.getMonth();
+        const mes = objetoDate.getMonth() + 1;
         const dia = objetoDate.getDate();
         return { anio, mes, dia };
     }

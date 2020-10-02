@@ -4,13 +4,30 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class PedidoEntidad {
   @PrimaryGeneratedColumn()
   id: number;
-/* 
-  @Column()
+
+  @Column({
+    length: 50
+  })
   nombre: string;
 
-  @Column()
-  clave: string;
- */
+  @Column({
+    length: 13
+  })
+  celular: string;
+
+  @Column({
+    length: 100
+  })
+  direccion: string;
+
   @Column()
   fechaCreacion: Date;
+
+  @Column({
+    nullable: true
+  })
+  fechaPago: Date;
+
+  @Column("simple-array")
+  detalle: string[];
 }

@@ -1,18 +1,19 @@
 import { Pedido } from "src/dominio/pedido/modelo/pedido";
+import { PedidoBuilder } from "test/util/builder/PedidoBuilder";
 
 describe('Pedido', () => {
 
-    const _Pedido = Pedido as any;
-    let unPedido;
+    let unPedido: Pedido;
 
     beforeEach(() => {
-        unPedido = new _Pedido();
+        unPedido = PedidoBuilder.unPedidoBuilder()
+        .build();
     })
 
     it('1. un nuevo pedido deberia tener una fecha de pedido', () => {
 
-        expect(unPedido.fecha).not.toBeUndefined();
-        expect(unPedido.fecha).not.toBeNull();
+        expect(unPedido.fechaCreacion).not.toBeUndefined();
+        expect(unPedido.fechaCreacion).not.toBeNull();
     });
 
     it('2. un nuevo pedido NO deberia tener una fecha de pago', () => {

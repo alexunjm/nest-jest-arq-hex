@@ -12,8 +12,15 @@ export class DaoPedidoMysql implements DaoPedido {
   ) {}
 
   async listar(): Promise<PedidoDto[]> {
-    return this.entityManager.query(
-      'SELECT p.fechaCreacion FROM pedido p',
-    );
+    return this.entityManager.query([
+      'SELECT p.id,',
+        'p.nombre,',
+        'p.celular,',
+        'p.direccion,',
+        'p.fechaCreacion,',
+        'p.fechaPago,',
+        'p.detalle',
+      'FROM pedido p'
+    ].join(''));
   }
 }

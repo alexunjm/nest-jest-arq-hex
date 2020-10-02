@@ -13,7 +13,7 @@ export class PedidoControlador {
 
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
-  async tomar(@Body() comandoTomarPedido: ComandoTomarPedido) {
+  async tomarPedido(@Body() comandoTomarPedido: ComandoTomarPedido) {
     await this._manejadorTomarPedido.ejecutar(comandoTomarPedido);
   }
 

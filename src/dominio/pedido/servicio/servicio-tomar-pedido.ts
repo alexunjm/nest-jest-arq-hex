@@ -32,8 +32,9 @@ export class ServicioTomarPedido {
   }
 
   private estaElPedidoNoPagadoSoloDentroDelRangoDeFechasActivo(unPedido, rangoFechasActivo) {
-    if (!unPedido.fechaPago) {
-      const fechaPedido = new FechaDesdeDatosFecha(this.datosFechaDesdeIsoString(unPedido.fecha))
+    const estaElPedidoNoPagado = unPedido.fechaPago ? false: true;
+    if (estaElPedidoNoPagado) {
+      const fechaPedido = new FechaDesdeDatosFecha(this.datosFechaDesdeIsoString(unPedido.fechaCreacion));
       if (!rangoFechasActivo.incluye(fechaPedido)) return false;
     }
 
@@ -41,7 +42,7 @@ export class ServicioTomarPedido {
   }
 
   private estaElPedidoDentroDelRangoDeFechasActivo(pedido: Pedido, rangoFechasActivo: RangoFechas) {
-    const fechaPedido = new FechaDesdeInstanciaDate(pedido.fecha);
+    const fechaPedido = new FechaDesdeInstanciaDate(pedido.fechaCreacion);
     return rangoFechasActivo.incluye(fechaPedido);
   }
 

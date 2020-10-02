@@ -69,12 +69,12 @@ describe('ServicioTomarPedido', () => {
         );
         repositorioPedidoStub.tomarPedido.returns(
             Promise.resolve(unPedidoBuilder
-                .conFecha(new Date)
+                .conFechaCreacion(new Date)
                 .sinFechaPago()
                 .build())
         );
 
-        const unNuevoPedido = new Pedido();
+        const unNuevoPedido = unPedidoBuilder.build();
         await servicioTomarPedido.ejecutar(unNuevoPedido);
 
         expect(repositorioPedidoStub.tomarPedido.getCalls().length).toBe(1);
@@ -102,12 +102,12 @@ describe('ServicioTomarPedido', () => {
         );
         repositorioPedidoStub.tomarPedido.returns(
             Promise.resolve(unPedidoBuilder
-                .conFecha(new Date)
+                .conFechaCreacion(new Date)
                 .sinFechaPago()
                 .build())
         );
 
-        const unNuevoPedido = new Pedido();
+        const unNuevoPedido = unPedidoBuilder.build();
 
         await expect(
             servicioTomarPedido.ejecutar(unNuevoPedido),
@@ -169,7 +169,7 @@ describe('ServicioTomarPedido', () => {
                     }
                 ].map(datosPedido =>
                     unPedidoDtoBuilder
-                    .conFecha(datosPedido.fecha)
+                    .conFechaCreacion(datosPedido.fecha)
                     .conFechaPago(datosPedido.fechaPago)
                     .build()
                 )
@@ -177,20 +177,20 @@ describe('ServicioTomarPedido', () => {
         );
         repositorioPedidoStub.tomarPedido.returns(
             Promise.resolve(unPedidoBuilder
-                .conFecha(new Date)
+                .conFechaCreacion(new Date)
                 .sinFechaPago()
                 .build())
         );
         
         const resultado = unPedidoBuilder
-            .conFecha(new Date)
+            .conFechaCreacion(new Date)
             .sinFechaPago()
             .build();
         repositorioPedidoStub.tomarPedido.returns(
             Promise.resolve(resultado)
         );
 
-        const unNuevoPedido = new Pedido();
+        const unNuevoPedido = unPedidoBuilder.build();
 
         await expect(
             servicioTomarPedido.ejecutar(unNuevoPedido),
@@ -239,13 +239,13 @@ describe('ServicioTomarPedido', () => {
                         .convertirATipoDate()
                 }
             ].map(datosPedido => unPedidoDtoBuilder
-                .conFecha(datosPedido.fecha)
+                .conFechaCreacion(datosPedido.fecha)
                 .conFechaPago(datosPedido.fechaPago)
                 .build()
             ))
         );
 
-        const unNuevoPedido = new Pedido();
+        const unNuevoPedido = unPedidoBuilder.build();
 
         await expect(
             servicioTomarPedido.ejecutar(unNuevoPedido),
@@ -294,20 +294,20 @@ describe('ServicioTomarPedido', () => {
                         .convertirATipoDate()
                 }
             ].map(datosPedido => unPedidoDtoBuilder
-                .conFecha(datosPedido.fecha)
+                .conFechaCreacion(datosPedido.fecha)
                 .conFechaPago(datosPedido.fechaPago)
                 .build()
             ))
         );
         const resultado = unPedidoBuilder
-            .conFecha(new Date)
+            .conFechaCreacion(new Date)
             .sinFechaPago()
             .build();
         repositorioPedidoStub.tomarPedido.returns(
             Promise.resolve(resultado)
         );
 
-        const unNuevoPedido = new Pedido();
+        const unNuevoPedido = unPedidoBuilder.build();
 
         await expect(
             servicioTomarPedido.ejecutar(unNuevoPedido),

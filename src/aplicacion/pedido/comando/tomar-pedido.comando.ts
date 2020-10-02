@@ -1,16 +1,25 @@
-import { IsDateString/* , IsString */ } from 'class-validator';
+import { /* IsDateString,  */IsArray, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ComandoTomarPedido {/* 
+export class ComandoTomarPedido {
+
   @IsString()
-  @ApiProperty({ example: 'William'})
+  @ApiProperty({ example: 'Alex'})
   public nombre: string;
 
   @IsString()
-  @ApiProperty({ minLength: 4, example: '1234' })
-  public clave: string;
- */
+  @ApiProperty({ minLength: 7, maxLength: 13, example: '3012129921'})
+  public celular: string;
+
+  @IsString()
+  @ApiProperty({ example: 'calle 94a #63a-80'})
+  public direccion: string;
+
+  @IsArray()
+  @ApiProperty()
+  public detalle: string[];
+/* 
   @IsDateString()
   @ApiProperty({ type: Date })
-  public fechaCreacion: string;
+  public fechaCreacion: string; */
 }

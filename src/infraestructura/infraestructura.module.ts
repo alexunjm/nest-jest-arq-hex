@@ -1,7 +1,6 @@
 import * as Joi from '@hapi/joi';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsuarioModule } from './usuario/usuario.module';
 import { PedidoModule } from './pedido/pedido.module';
 import { AppLogger } from './configuracion/ceiba-logger.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -26,7 +25,6 @@ import { RangoFechasModule } from './rango-fechas/rango-fechas.module';
       }),
     }),
     RangoFechasModule,
-    UsuarioModule,
     PedidoModule,
   ],
 })
