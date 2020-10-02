@@ -1,3 +1,4 @@
+import { PedidoDto } from "src/aplicacion/pedido/consulta/dto/pedido.dto";
 import { ErrorDeNegocio } from "src/dominio/errores/error-de-negocio";
 import { FechaDesdeDatosFecha } from "src/dominio/fecha/modelo/fecha-desde-datos-fecha";
 import { FechaDesdeInstanciaDate } from "src/dominio/fecha/modelo/fecha-desde-instancia-date";
@@ -16,7 +17,8 @@ export class ServicioTomarPedido {
   ) {
   }
 
-  async ejecutar(pedido: Pedido) {
+  async ejecutar(pedido: Pedido): Promise<PedidoDto> {
+    
     const rangoFechasActivo = await this.consultarRangoFechasActivo();
     if (!this.estaElPedidoDentroDelRangoDeFechasActivo(pedido, rangoFechasActivo)) {
       throw new ErrorDeNegocio('No se puede tomar pedido fuera del rango de fechas activo');
@@ -28,7 +30,7 @@ export class ServicioTomarPedido {
         throw new ErrorDeNegocio('No se puede tomar el pedido porque hay un pedido pendiente por pagar');
       }
     }
-    return await this._repositorioPedido.tomarPedido(pedido);
+    return this._repositorioPedido.tomarPedido(pedido);
   }
 
   private estaElPedidoNoPagadoSoloDentroDelRangoDeFechasActivo(unPedido, rangoFechasActivo) {

@@ -1,5 +1,4 @@
 import { SinonStubbedInstance } from "sinon";
-import { Pedido } from "src/dominio/pedido/modelo/pedido";
 import { DaoPedido } from "src/dominio/pedido/puerto/dao/dao-pedido";
 import { RepositorioPedido } from "src/dominio/pedido/puerto/repositorio/repositorio-pedido";
 import { ServicioTomarPedido } from "src/dominio/pedido/servicio/servicio-tomar-pedido";
@@ -67,18 +66,24 @@ describe('ServicioTomarPedido', () => {
         daoPedidoStub.listar.returns(
             Promise.resolve([])
         );
+        const fechaCreacion = new Date();
         repositorioPedidoStub.tomarPedido.returns(
-            Promise.resolve(unPedidoBuilder
-                .conFechaCreacion(new Date)
+            Promise.resolve(unPedidoDtoBuilder
+                .conId(1)
+                .conFechaCreacion(fechaCreacion)
                 .sinFechaPago()
-                .build())
+                .build()
+            )
         );
 
         const unNuevoPedido = unPedidoBuilder.build();
-        await servicioTomarPedido.ejecutar(unNuevoPedido);
+        const respuesta = await servicioTomarPedido.ejecutar(unNuevoPedido);
 
         expect(repositorioPedidoStub.tomarPedido.getCalls().length).toBe(1);
         expect(repositorioPedidoStub.tomarPedido.calledWith(unNuevoPedido)).toBeTruthy();
+        expect(respuesta.fechaPago).toBeFalsy();
+        expect(respuesta.fechaCreacion).toBe(fechaCreacion.toISOString());
+        expect(respuesta.id).toBe(1);
     });
 
     it([
@@ -99,12 +104,6 @@ describe('ServicioTomarPedido', () => {
         );
         daoPedidoStub.listar.returns(
             Promise.resolve([])
-        );
-        repositorioPedidoStub.tomarPedido.returns(
-            Promise.resolve(unPedidoBuilder
-                .conFechaCreacion(new Date)
-                .sinFechaPago()
-                .build())
         );
 
         const unNuevoPedido = unPedidoBuilder.build();
@@ -175,15 +174,11 @@ describe('ServicioTomarPedido', () => {
                 )
             )
         );
-        repositorioPedidoStub.tomarPedido.returns(
-            Promise.resolve(unPedidoBuilder
-                .conFechaCreacion(new Date)
-                .sinFechaPago()
-                .build())
-        );
+        const fechaCreacion = new Date();
         
-        const resultado = unPedidoBuilder
-            .conFechaCreacion(new Date)
+        const resultado = unPedidoDtoBuilder
+            .conId(1)
+            .conFechaCreacion(fechaCreacion)
             .sinFechaPago()
             .build();
         repositorioPedidoStub.tomarPedido.returns(
@@ -299,8 +294,11 @@ describe('ServicioTomarPedido', () => {
                 .build()
             ))
         );
-        const resultado = unPedidoBuilder
-            .conFechaCreacion(new Date)
+        const fechaCreacion = new Date();
+        
+        const resultado = unPedidoDtoBuilder
+            .conId(1)
+            .conFechaCreacion(fechaCreacion)
             .sinFechaPago()
             .build();
         repositorioPedidoStub.tomarPedido.returns(

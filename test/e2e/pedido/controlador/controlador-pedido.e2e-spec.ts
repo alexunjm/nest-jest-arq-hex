@@ -15,8 +15,6 @@ import { createSandbox, SinonStubbedInstance } from 'sinon';
 import { createStubObj } from '../../../util/create-object.stub';
 import { DaoRangoFechas } from 'src/dominio/rango-fechas/puerto/dao/dao-rango-fechas';
 import { FechaBuilder } from 'test/util/builder/FechaBuilder';
-import { PedidoBuilder } from 'test/util/builder/PedidoBuilder';
-import { Pedido } from 'src/dominio/pedido/modelo/pedido';
 import { PedidoDtoBuilder } from 'test/util/builder/PedidoDtoBuilder';
 import { PedidoDto } from 'src/aplicacion/pedido/consulta/dto/pedido.dto';
 
@@ -105,6 +103,17 @@ describe('Pruebas al controlador de pedidos', () => {
                 .convertirATipoString(),
         })
     );
+    const fechaCreacion = new Date();
+    const pedidoGuardado = PedidoDtoBuilder
+      .unPedidoDtoBuilder()
+      .conId(1)
+      .conFechaCreacion(fechaCreacion)
+      .sinFechaPago()
+      .buildAsExpectedResponse()
+    repositorioPedido.tomarPedido.returns(
+        Promise.resolve(pedidoGuardado)
+    );
+
     const pedido: ComandoTomarPedido = {
       nombre: 'Lorem ipsum', 
       celular: 'Lorem ipsum', 
@@ -115,8 +124,7 @@ describe('Pruebas al controlador de pedidos', () => {
     const response = await request(app.getHttpServer())
       .post('/pedidos').send(pedido)
       .expect(HttpStatus.CREATED);
-    expect(response.body).toBe(HttpStatus.CREATED);
-    expect(response.body.statusCode).toBe(HttpStatus.CREATED);
+    expect(response.body.id).toBe(pedidoGuardado.id);
   });
 /* 
   it([

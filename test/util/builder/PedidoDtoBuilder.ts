@@ -67,6 +67,11 @@ export class PedidoDtoBuilder {
 
     build(): PedidoDto {
         const unPedidoDto = new PedidoDto();
+        unPedidoDto.id = this.id;
+        unPedidoDto.nombre = this.nombre;
+        unPedidoDto.celular = this.celular;
+        unPedidoDto.direccion = this.direccion;
+        unPedidoDto.detalle = this.detalle;
         unPedidoDto.fechaCreacion = this.fechaCreacion;
         unPedidoDto.fechaPago = this.fechaPago;
         return unPedidoDto;
