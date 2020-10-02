@@ -14,7 +14,7 @@ import { AppLogger } from 'src/infraestructura/configuracion/ceiba-logger.servic
 import { createSandbox, SinonStubbedInstance } from 'sinon';
 import { createStubObj } from '../../../util/create-object.stub';
 import { DaoRangoFechas } from 'src/dominio/rango-fechas/puerto/dao/dao-rango-fechas';
-import { FechaBuilder } from 'test/util/builder/FechaBuilder';
+import { FechaBuilder, FechaDesdeDatosFechaBuilder, FechaDesdeInstanciaDateBuilder } from 'test/util/builder/FechaBuilder';
 import { PedidoDtoBuilder } from 'test/util/builder/PedidoDtoBuilder';
 import { PedidoDto } from 'src/aplicacion/pedido/consulta/dto/pedido.dto';
 
@@ -30,18 +30,22 @@ describe('Pruebas al controlador de pedidos', () => {
   let daoPedido: SinonStubbedInstance<DaoPedido>;
   let daoRangoFechas: SinonStubbedInstance<DaoRangoFechas>;
   
-  let unaFechaBuilder: FechaBuilder;
+  let instanciaDateHoy: Date;
+  let datosFechaHoy: DatosFecha;
 
   /**
    * No Inyectar los módulos completos (Se trae TypeORM y genera lentitud al levantar la prueba, traer una por una las dependencias)
    **/
   beforeAll(async () => {
-    unaFechaBuilder = FechaBuilder.unaFechaBuilder();
+    instanciaDateHoy = new Date();
+    datosFechaHoy = FechaDesdeInstanciaDateBuilder.unaFechaDesdeInstanciaDateBuilder()
+      .conFechaTipoDate(instanciaDateHoy).build();
+
     repositorioPedido = createStubObj<RepositorioPedido>(['tomarPedido'], sinonSandbox);
     daoPedido = createStubObj<DaoPedido>(['listar'], sinonSandbox);
     daoRangoFechas = createStubObj<DaoRangoFechas>([
         'obtenerRangoActivo'
-    ]);
+    ], sinonSandbox);
     const moduleRef = await Test.createTestingModule({
       controllers: [PedidoControlador],
       providers: [
@@ -93,38 +97,91 @@ describe('Pruebas al controlador de pedidos', () => {
     '2. si un cliente nuevo toma un pedido en el rango de fechas activo',
     'debería crearse el pedido'
   ].join(' '), async () => {
+
     daoRangoFechas.obtenerRangoActivo.returns(
         Promise.resolve({
-            desde: unaFechaBuilder
+            desde: FechaBuilder.unaFechaBuilder()
                 .buildConFechaDeAyer()
                 .convertirATipoString(),
-            hasta: unaFechaBuilder
+            hasta: FechaBuilder.unaFechaBuilder()
                 .buildConFechaDeHoy()
                 .convertirATipoString(),
         })
     );
-    const fechaCreacion = new Date();
-    const pedidoGuardado = PedidoDtoBuilder
-      .unPedidoDtoBuilder()
-      .conId(1)
-      .conFechaCreacion(fechaCreacion)
-      .sinFechaPago()
-      .buildAsExpectedResponse()
-    repositorioPedido.tomarPedido.returns(
-        Promise.resolve(pedidoGuardado)
+
+    daoPedido.listar.returns(
+        Promise.resolve([])
     );
 
-    const pedido: ComandoTomarPedido = {
+    const comandoTomarPedido: ComandoTomarPedido = {
       nombre: 'Lorem ipsum', 
       celular: 'Lorem ipsum', 
       direccion: 'Lorem ipsum', 
       detalle: ['detalle1']
     };
 
+    const fechaCreacion = new Date();
+    const pedidoGuardado = PedidoDtoBuilder
+      .unPedidoDtoBuilder()
+      .conId(1)
+      .conNombre(comandoTomarPedido.nombre)
+      .conCelular(comandoTomarPedido.celular)
+      .conDireccion(comandoTomarPedido.direccion)
+      .conDetalle(comandoTomarPedido.detalle)
+      .conFechaCreacion(fechaCreacion)
+      .sinFechaPago()
+      .buildAsExpectedResponse();
+
+    repositorioPedido.tomarPedido.returns(
+        Promise.resolve(pedidoGuardado)
+    );
+
     const response = await request(app.getHttpServer())
-      .post('/pedidos').send(pedido)
+      .post('/pedidos').send(comandoTomarPedido)
       .expect(HttpStatus.CREATED);
     expect(response.body.id).toBe(pedidoGuardado.id);
+  });
+
+  it([
+    '3. si un cliente nuevo toma un pedido FUERA del rango de fechas activo',
+    'NO debería crearse el pedido'
+  ].join(' '), async () => {
+
+    const rangoDeFechasHace10DiasHastaAyer = {
+      desde: FechaDesdeDatosFechaBuilder
+          .unaFechaDesdeDatosFechaBuilder()
+          .conAnio(datosFechaHoy.anio)
+          .conMes(datosFechaHoy.mes)
+          .conDia(datosFechaHoy.dia - 10)
+          .build().convertirATipoString(),
+      hasta: FechaBuilder.unaFechaBuilder()
+          .buildConFechaDeAyer()
+          .convertirATipoString(),
+    };
+    console.log({rangoDeFechasHace10DiasHastaAyer});
+    
+    daoRangoFechas.obtenerRangoActivo.returns(
+        Promise.resolve(rangoDeFechasHace10DiasHastaAyer)
+    );
+
+    daoPedido.listar.returns(
+        Promise.resolve([])
+    );
+
+    const comandoTomarPedido: ComandoTomarPedido = {
+      nombre: 'Lorem ipsum', 
+      celular: 'Lorem ipsum', 
+      direccion: 'Lorem ipsum', 
+      detalle: ['detalle1']
+    };
+
+    const mensaje = 'No se puede tomar pedido fuera del rango de fechas activo';
+
+    const response = await request(app.getHttpServer())
+      .post('/pedidos').send(comandoTomarPedido)
+      .expect(HttpStatus.BAD_REQUEST);
+    expect(response.body.message).toBe(mensaje);
+    expect(response.body.statusCode).toBe(HttpStatus.BAD_REQUEST);
   });
 /* 
   it([
@@ -133,10 +190,10 @@ describe('Pruebas al controlador de pedidos', () => {
   ].join(' '), async () => {
     daoRangoFechas.obtenerRangoActivo.returns(
         Promise.resolve({
-            desde: unaFechaBuilder
+            desde: FechaBuilder.unaFechaBuilder()
                 .buildConFechaDeAyer()
                 .convertirATipoString(),
-            hasta: unaFechaBuilder
+            hasta: FechaBuilder.unaFechaBuilder()
                 .buildConFechaDeHoy()
                 .convertirATipoString(),
         })

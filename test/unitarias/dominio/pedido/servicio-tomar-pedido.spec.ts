@@ -107,10 +107,11 @@ describe('ServicioTomarPedido', () => {
         );
 
         const unNuevoPedido = unPedidoBuilder.build();
+        const mensaje = 'No se puede tomar pedido fuera del rango de fechas activo';
 
         await expect(
             servicioTomarPedido.ejecutar(unNuevoPedido),
-        ).rejects.toThrow('No se puede tomar pedido fuera del rango de fechas activo');
+        ).rejects.toThrow(mensaje);
     });
 
     it([
