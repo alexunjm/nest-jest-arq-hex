@@ -18,8 +18,8 @@ export class PedidoDto {
   public detalle: string[];
 
   @ApiProperty({ type: Date })
-  public fechaCreacion: string;
+  public fechaCreacion: Date;
 
   @ApiProperty({ type: Date })
-  public fechaPago: string;
+  public fechaPago: Date;
 }

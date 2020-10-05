@@ -2,5 +2,5 @@ import { RangoFechasDto } from "src/aplicacion/rango-fechas/consulta/dto/rango-f
 
 export abstract class DaoRangoFechas {
   abstract async listar(): Promise<RangoFechasDto[]>;
-  abstract async obtenerRangoActivo(): Promise<RangoFechasDto>;
+  abstract async obtenerRangoActivo(): Promise<RangoFechasDto[]>;
 }

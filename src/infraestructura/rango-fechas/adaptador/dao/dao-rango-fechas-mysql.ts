@@ -11,12 +11,13 @@ export class DaoRangoFechasMysql implements DaoRangoFechas {
     private readonly entityManager: EntityManager,
   ) {}
 
-  obtenerRangoActivo(): Promise<RangoFechasDto> {
+  obtenerRangoActivo(): Promise<RangoFechasDto[]> {
     return this.entityManager.query(
       [
         'SELECT rf.desde, rf.hasta ',
         'FROM `rango-fechas` rf',
-        'WHERE rf.activo === true'
+        'WHERE rf.activa is true',
+        'LIMIT 1'
       ].join(' '),
     );
   }

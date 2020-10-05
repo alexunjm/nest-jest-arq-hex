@@ -21,6 +21,6 @@ export class DaoPedidoMysql implements DaoPedido {
         'p.fechaPago,',
         'p.detalle',
       'FROM pedido p'
-    ].join(''));
+    ].join(' '));
   }
 }

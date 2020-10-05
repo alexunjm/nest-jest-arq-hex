@@ -3,15 +3,9 @@ import { FechaDesdeDatosFecha } from "./fecha-desde-datos-fecha";
 
 export class FechaDesdeInstanciaDate extends FechaDesdeDatosFecha {
 
-    fechaTipoDate: Date;
 
     constructor(objetoDate: Date) {
         super(FechaDesdeInstanciaDate.datosFechaDe(objetoDate));
-        this.fechaTipoDate = objetoDate;
-    }
-
-    public obtenerDatosFecha() {
-        FechaDesdeInstanciaDate.datosFechaDe(this.fechaTipoDate);
     }
 
     private static datosFechaDe(objetoDate: Date): DatosFecha {

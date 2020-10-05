@@ -33,10 +33,10 @@ export class ServicioTomarPedido {
     return this._repositorioPedido.tomarPedido(pedido);
   }
 
-  private estaElPedidoNoPagadoSoloDentroDelRangoDeFechasActivo(unPedido, rangoFechasActivo) {
+  private estaElPedidoNoPagadoSoloDentroDelRangoDeFechasActivo(unPedido: PedidoDto, rangoFechasActivo: RangoFechas) {
     const estaElPedidoNoPagado = unPedido.fechaPago ? false: true;
     if (estaElPedidoNoPagado) {
-      const fechaPedido = new FechaDesdeDatosFecha(this.datosFechaDesdeIsoString(unPedido.fechaCreacion));
+      const fechaPedido = new FechaDesdeInstanciaDate(unPedido.fechaCreacion);
       if (!rangoFechasActivo.incluye(fechaPedido)) return false;
     }
 
@@ -48,8 +48,8 @@ export class ServicioTomarPedido {
     return rangoFechasActivo.incluye(fechaPedido);
   }
 
-  private async consultarRangoFechasActivo() {
-    const daoRangoFechasActivo = await this._daoRangoFechas.obtenerRangoActivo();
+  private async consultarRangoFechasActivo(): Promise<RangoFechas> {
+    const [daoRangoFechasActivo] = await this._daoRangoFechas.obtenerRangoActivo();
 
     const datosFechaParaRango = this.datosFechaRango(
       daoRangoFechasActivo.desde,
@@ -59,31 +59,10 @@ export class ServicioTomarPedido {
     return rangoFechasActivo;
   }
 
-  private datosFechaRango(desde: string, hasta: string) {
-    const datosFechaDesde = this.datosFechaDesdeString(desde);
-    const datosFechaHasta = this.datosFechaDesdeString(hasta);
+  private datosFechaRango(desde: Date, hasta: Date) {
     return {
-      desde: new FechaDesdeDatosFecha(datosFechaDesde),
-      hasta: new FechaDesdeDatosFecha(datosFechaHasta)
-    }
-  }
-
-  private datosFechaDesdeIsoString(objetoDateString: string): DatosFecha {
-    const [stringFechaHasta] = objetoDateString.split('T');
-    const [anio, mes, dia] = stringFechaHasta.split('-').map(Number);
-    return {
-      anio,
-      mes,
-      dia,
-    }
-  }
-  private datosFechaDesdeString(objetoDateString: string): DatosFecha {
-    const [stringFechaHasta] = objetoDateString.split(' ');
-    const [anio, mes, dia] = stringFechaHasta.split('-').map(Number);
-    return {
-      anio,
-      mes,
-      dia,
+      desde: new FechaDesdeInstanciaDate(desde),
+      hasta: new FechaDesdeInstanciaDate(hasta)
     }
   }
 }

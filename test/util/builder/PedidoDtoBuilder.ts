@@ -7,8 +7,8 @@ export class PedidoDtoBuilder {
     celular: string;
     direccion: string;
     detalle: string[];
-    fechaCreacion: string;
-    fechaPago: string;
+    fechaCreacion: Date;
+    fechaPago: Date;
   
     constructor() {
         this.id = 1;
@@ -17,8 +17,8 @@ export class PedidoDtoBuilder {
         this.direccion = '<direccion>';
         this.detalle = ['<detalle>'];
         const instanciaDateHoy = new Date();
-        this.fechaCreacion = instanciaDateHoy.toISOString();
-        this.fechaPago = instanciaDateHoy.toISOString();
+        this.fechaCreacion = instanciaDateHoy;
+        this.fechaPago = instanciaDateHoy;
     }
 
     static unPedidoDtoBuilder():PedidoDtoBuilder {
@@ -51,12 +51,12 @@ export class PedidoDtoBuilder {
     }
 
     conFechaCreacion(unaInstanciaDate: Date): PedidoDtoBuilder {
-        this.fechaCreacion = unaInstanciaDate.toISOString();
+        this.fechaCreacion = unaInstanciaDate;
         return this;
     }
 
     conFechaPago(unaInstanciaDateParaFechaPago: Date): PedidoDtoBuilder {
-        this.fechaPago = unaInstanciaDateParaFechaPago ? unaInstanciaDateParaFechaPago.toISOString(): null;
+        this.fechaPago = unaInstanciaDateParaFechaPago ? unaInstanciaDateParaFechaPago: null;
         return this;
     }
 
@@ -84,8 +84,8 @@ export class PedidoDtoBuilder {
             celular: this.celular,
             direccion: this.direccion,
             detalle: this.detalle,
-            fechaCreacion: this.fechaCreacion,
-            fechaPago: this.fechaPago,
+            fechaCreacion: this.fechaCreacion.toISOString(),
+            fechaPago: this.fechaPago ? this.fechaPago.toISOString(): undefined,
         };
     }
 }

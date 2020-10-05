@@ -54,14 +54,14 @@ describe('ServicioTomarPedido', () => {
         'debería crearse el pedido'
     ].join(' '), async () => {
         daoRangoFechasStub.obtenerRangoActivo.returns(
-            Promise.resolve({
+            Promise.resolve([{
                 desde: unaFechaBuilder
                     .buildConFechaDeAyer()
-                    .convertirATipoString(),
+                    .convertirATipoDate(),
                 hasta: unaFechaBuilder
                     .buildConFechaDeHoy()
-                    .convertirATipoString(),
-            })
+                    .convertirATipoDate(),
+            }])
         );
         daoPedidoStub.listar.returns(
             Promise.resolve([])
@@ -82,7 +82,7 @@ describe('ServicioTomarPedido', () => {
         expect(repositorioPedidoStub.tomarPedido.getCalls().length).toBe(1);
         expect(repositorioPedidoStub.tomarPedido.calledWith(unNuevoPedido)).toBeTruthy();
         expect(respuesta.fechaPago).toBeFalsy();
-        expect(respuesta.fechaCreacion).toBe(fechaCreacion.toISOString());
+        expect(respuesta.fechaCreacion).toBe(fechaCreacion);
         expect(respuesta.id).toBe(1);
     });
 
@@ -91,16 +91,16 @@ describe('ServicioTomarPedido', () => {
         'NO debería crearse el pedido'
     ].join(' '), async () => {
         daoRangoFechasStub.obtenerRangoActivo.returns(
-            Promise.resolve({
+            Promise.resolve([{
                 desde: unaFechaDesdeDatosFechaBuilder
                     .conAnio(datosFechaHoy.anio)
                     .conMes(datosFechaHoy.mes)
                     .conDia(datosFechaHoy.dia - 10)
-                    .build().convertirATipoString(),
+                    .build().convertirATipoDate(),
                 hasta: unaFechaBuilder
                     .buildConFechaDeAyer()
-                    .convertirATipoString(),
-            })
+                    .convertirATipoDate(),
+            }])
         );
         daoPedidoStub.listar.returns(
             Promise.resolve([])
@@ -121,14 +121,14 @@ describe('ServicioTomarPedido', () => {
         'debería crearse el pedido y responder algo diferente de null'
     ].join(' '), async () => {
         daoRangoFechasStub.obtenerRangoActivo.returns(
-            Promise.resolve({
+            Promise.resolve([{
                 desde: unaFechaBuilder
                     .buildConFechaDeAyer()
-                    .convertirATipoString(),
+                    .convertirATipoDate(),
                 hasta: unaFechaBuilder
                     .buildConFechaDeHoy()
-                    .convertirATipoString(),
-            })
+                    .convertirATipoDate(),
+            }])
         );
         daoPedidoStub.listar.returns(
             Promise.resolve(
@@ -197,17 +197,17 @@ describe('ServicioTomarPedido', () => {
         '4. si un cliente toma un pedido DENTRO el rango de fechas activo',
         'y TIENE PEDIDOS PENDIENTES POR PAGAR tomados',
         'FUERA del rango de fechas activo,',
-        'NO se depería poder crear el pedido y debería lanzar un error'
+        'NO se debería poder crear el pedido y debería lanzar un error'
     ].join(' '), async () => {
         daoRangoFechasStub.obtenerRangoActivo.returns(
-            Promise.resolve({
+            Promise.resolve([{
                 desde: unaFechaBuilder
                     .buildConFechaDeAyer()
-                    .convertirATipoString(),
+                    .convertirATipoDate(),
                 hasta: unaFechaBuilder
                     .buildConFechaDeHoy()
-                    .convertirATipoString(),
-            })
+                    .convertirATipoDate(),
+            }])
         );
         daoPedidoStub.listar.returns(
             Promise.resolve([
@@ -255,14 +255,14 @@ describe('ServicioTomarPedido', () => {
         'debería crearse el pedido y responder algo diferente de null'
     ].join(' '), async () => {
         daoRangoFechasStub.obtenerRangoActivo.returns(
-            Promise.resolve({
+            Promise.resolve([{
                 desde: unaFechaBuilder
                     .buildConFechaDeAyer()
-                    .convertirATipoString(),
+                    .convertirATipoDate(),
                 hasta: unaFechaBuilder
                     .buildConFechaDeHoy()
-                    .convertirATipoString(),
-            })
+                    .convertirATipoDate(),
+            }])
         );
         daoPedidoStub.listar.returns(
             Promise.resolve([

@@ -28,7 +28,7 @@ export class RepositorioPedidoMysql implements RepositorioPedido {
     pedidoDto.nombre = pedidoEntidad.nombre;
     pedidoDto.celular = pedidoEntidad.celular;
     pedidoDto.direccion = pedidoEntidad.direccion;
-    pedidoDto.fechaCreacion = pedidoEntidad.fechaCreacion.toISOString();
+    pedidoDto.fechaCreacion = pedidoEntidad.fechaCreacion;
     pedidoDto.detalle = pedidoEntidad.detalle;
     
     return pedidoDto;

@@ -17,6 +17,7 @@ import { DaoRangoFechas } from 'src/dominio/rango-fechas/puerto/dao/dao-rango-fe
 import { FechaBuilder, FechaDesdeDatosFechaBuilder, FechaDesdeInstanciaDateBuilder } from 'test/util/builder/FechaBuilder';
 import { PedidoDtoBuilder } from 'test/util/builder/PedidoDtoBuilder';
 import { PedidoDto } from 'src/aplicacion/pedido/consulta/dto/pedido.dto';
+import { RangoFechasDto } from 'src/aplicacion/rango-fechas/consulta/dto/rango-fechas.dto';
 
 /**
  * Un sandbox es util cuando el módulo de nest se configura una sola vez durante el ciclo completo de pruebas
@@ -99,14 +100,14 @@ describe('Pruebas al controlador de pedidos', () => {
   ].join(' '), async () => {
 
     daoRangoFechas.obtenerRangoActivo.returns(
-        Promise.resolve({
+        Promise.resolve([{
             desde: FechaBuilder.unaFechaBuilder()
                 .buildConFechaDeAyer()
-                .convertirATipoString(),
+                .convertirATipoDate(),
             hasta: FechaBuilder.unaFechaBuilder()
                 .buildConFechaDeHoy()
-                .convertirATipoString(),
-        })
+                .convertirATipoDate(),
+        }])
     );
 
     daoPedido.listar.returns(
@@ -147,21 +148,21 @@ describe('Pruebas al controlador de pedidos', () => {
     'NO debería crearse el pedido'
   ].join(' '), async () => {
 
-    const rangoDeFechasHace10DiasHastaAyer = {
+    const rangoDeFechasHace10DiasHastaAyer: RangoFechasDto = {
       desde: FechaDesdeDatosFechaBuilder
           .unaFechaDesdeDatosFechaBuilder()
           .conAnio(datosFechaHoy.anio)
           .conMes(datosFechaHoy.mes)
           .conDia(datosFechaHoy.dia - 10)
-          .build().convertirATipoString(),
+          .build().convertirATipoDate(),
       hasta: FechaBuilder.unaFechaBuilder()
           .buildConFechaDeAyer()
-          .convertirATipoString(),
+          .convertirATipoDate(),
     };
-    console.log({rangoDeFechasHace10DiasHastaAyer});
+    // console.log({rangoDeFechasHace10DiasHastaAyer});
     
     daoRangoFechas.obtenerRangoActivo.returns(
-        Promise.resolve(rangoDeFechasHace10DiasHastaAyer)
+        Promise.resolve([rangoDeFechasHace10DiasHastaAyer])
     );
 
     daoPedido.listar.returns(
