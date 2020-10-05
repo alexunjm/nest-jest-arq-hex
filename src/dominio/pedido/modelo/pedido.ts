@@ -9,10 +9,10 @@ export class Pedido {
     fechaPago: Date;
 
     constructor(nombre: string, celular: string, direccion: string, detalle: string[]) {
-        this.nombre = nombre,
-        this.celular = celular,
-        this.direccion = direccion,
-        this.detalle = detalle,
+        this.nombre = nombre;
+        this.celular = celular;
+        this.direccion = direccion;
+        this.detalle = detalle;
         this.fechaCreacion = new Date();
     }
 }
