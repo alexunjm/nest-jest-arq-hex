@@ -19,7 +19,7 @@ pipeline{
 			stage('Checkout') {
 				steps {
                 echo '------------>Checkout desde Git Microservicio<------------'
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: 'Default' , submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHub_boterojuanpa', url: 'https://github.com/boterojuanpa/node-jest-arquitectura-hexagonal']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], gitTool: 'Default' , submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHub_alexunjm', url: 'https://github.com/alexunjm/nest-jest-arq-hex']]])
 				}
 			}
 		
@@ -41,7 +41,7 @@ pipeline{
 			 	steps{
 			 		echo '------------>Analisis de código estático<------------'
 			 		  withSonarQubeEnv('Sonar') {
-                         sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dsonar.projectKey=co.com.cliente:proyecto.nombre.apellido.master -Dsonar.projectName=co.com.cliente:proyecto.nombre.apellido.master -Dproject.settings=./sonar-project.properties"
+                         sh "${tool name: 'SonarScanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'}/bin/sonar-scanner -Dsonar.projectKey=co.com.ceiba:ADN.alexander.jaramillo.master -Dsonar.projectName=co.com.ceiba:ADN.alexander.jaramillo.master -Dproject.settings=./sonar-project.properties"
                       }
 			 	}
 			 }
@@ -51,7 +51,7 @@ pipeline{
 		}
 		post {
 			failure {
-				mail(to: 'juan.botero@ceiba.com.co',
+				mail(to: 'alexander.jaramillo@ceiba.com.co',
 				body:"Build failed in Jenkins: Project: ${env.JOB_NAME} Build /n Number: ${env.BUILD_NUMBER} URL de build: ${env.BUILD_NUMBER}/n/nPlease go to ${env.BUILD_URL} and verify the build",
 				subject: "ERROR CI: ${env.JOB_NAME}")
 			}

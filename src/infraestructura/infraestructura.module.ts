@@ -1,11 +1,12 @@
 import * as Joi from '@hapi/joi';
 import { Module } from '@nestjs/common';
-import { UsuarioModule } from './usuario/usuario.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PedidoModule } from './pedido/pedido.module';
 import { AppLogger } from './configuracion/ceiba-logger.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { NodeEnv } from './configuracion/environment/env-node.enum';
 import { databaseConfigFactory } from './configuracion/database.config';
+import { RangoFechasModule } from './rango-fechas/rango-fechas.module';
 
 @Module({
   providers: [AppLogger],
@@ -23,7 +24,8 @@ import { databaseConfigFactory } from './configuracion/database.config';
           .required(),
       }),
     }),
-    UsuarioModule,
+    RangoFechasModule,
+    PedidoModule,
   ],
 })
 export class InfraestructuraModule {
