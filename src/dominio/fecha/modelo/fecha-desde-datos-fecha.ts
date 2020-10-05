@@ -8,7 +8,6 @@ export class FechaDesdeDatosFecha implements Fecha {
     
     constructor(datosFecha: DatosFecha) {
         const unaDate = new Date(datosFecha.anio, datosFecha.mes - 1, datosFecha.dia);
-        // console.log({unaDate, datosFecha});
         
         this.anio = unaDate.getFullYear();
         this.mes = unaDate.getMonth() + 1;

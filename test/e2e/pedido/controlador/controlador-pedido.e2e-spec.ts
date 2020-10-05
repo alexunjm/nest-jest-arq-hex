@@ -159,7 +159,6 @@ describe('Pruebas al controlador de pedidos', () => {
           .buildConFechaDeAyer()
           .convertirATipoDate(),
     };
-    // console.log({rangoDeFechasHace10DiasHastaAyer});
     
     daoRangoFechas.obtenerRangoActivo.returns(
         Promise.resolve([rangoDeFechasHace10DiasHastaAyer])
@@ -184,47 +183,4 @@ describe('Pruebas al controlador de pedidos', () => {
     expect(response.body.message).toBe(mensaje);
     expect(response.body.statusCode).toBe(HttpStatus.BAD_REQUEST);
   });
-/* 
-  it([
-    '1. si un cliente nuevo toma un pedido en el rango de fechas activo',
-    'debería crearse el pedido'
-  ].join(' '), async () => {
-    daoRangoFechas.obtenerRangoActivo.returns(
-        Promise.resolve({
-            desde: FechaBuilder.unaFechaBuilder()
-                .buildConFechaDeAyer()
-                .convertirATipoString(),
-            hasta: FechaBuilder.unaFechaBuilder()
-                .buildConFechaDeHoy()
-                .convertirATipoString(),
-        })
-    );
-    const pedido: ComandoTomarPedido = {
-      nombre: 'Lorem ipsum', 
-      celular: 'Lorem ipsum', 
-      direccion: 'Lorem ipsum', 
-      detalle: ['detalle1']
-    };
-    const mensaje = 'El tamaño mínimo de la clave debe ser 4';
-
-    const response = await request(app.getHttpServer())
-      .post('/pedidos').send(pedido)
-      .expect(HttpStatus.BAD_REQUEST);
-    expect(response.body.message).toBe(mensaje);
-    expect(response.body.statusCode).toBe(HttpStatus.BAD_REQUEST);
-  });
-
-  it('debería fallar al tomar un pedido ya existente', async () => {
-    const pedido: ComandoTomarPedido = {
-      fechaCreacion: (new Date()).toISOString(),
-    };
-    const mensaje = `El nombre de pedido ${pedido.nombre} ya existe`;
-    repositorioPedido.existeNombrePedido.returns(Promise.resolve(true));
-
-    const response = await request(app.getHttpServer())
-      .post('/pedidos').send(pedido)
-      .expect(HttpStatus.BAD_REQUEST);
-    expect(response.body.message).toBe(mensaje);
-    expect(response.body.statusCode).toBe(HttpStatus.BAD_REQUEST);
-  }); */
 });

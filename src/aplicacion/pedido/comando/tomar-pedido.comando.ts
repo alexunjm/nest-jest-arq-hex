@@ -1,4 +1,4 @@
-import { /* IsDateString,  */IsArray, IsString } from 'class-validator';
+import { IsArray, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ComandoTomarPedido {
@@ -18,8 +18,4 @@ export class ComandoTomarPedido {
   @IsArray()
   @ApiProperty()
   public detalle: string[];
-/* 
-  @IsDateString()
-  @ApiProperty({ type: Date })
-  public fechaCreacion: string; */
 }
