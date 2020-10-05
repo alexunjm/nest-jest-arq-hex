@@ -1,6 +1,5 @@
 import { PedidoDto } from "src/aplicacion/pedido/consulta/dto/pedido.dto";
 import { ErrorDeNegocio } from "src/dominio/errores/error-de-negocio";
-import { FechaDesdeDatosFecha } from "src/dominio/fecha/modelo/fecha-desde-datos-fecha";
 import { FechaDesdeInstanciaDate } from "src/dominio/fecha/modelo/fecha-desde-instancia-date";
 import { RangoFechas } from "src/dominio/fecha/modelo/rango-fechas";
 import { DaoRangoFechas } from "src/dominio/rango-fechas/puerto/dao/dao-rango-fechas";
